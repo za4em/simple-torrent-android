@@ -75,10 +75,9 @@ open class TorrentSession(
             )
 
     private class TorrentSessionAlertListener(
-            torrentSession: TorrentSession
+            val torrentSession: TorrentSession
     ) : AlertListener {
 
-        private val torrentSession: WeakReference<TorrentSession> = WeakReference(torrentSession)
 
         @Synchronized
         override fun alert(alert: Alert<*>) {
@@ -88,11 +87,6 @@ open class TorrentSession(
                     return
                 }
 
-                val torrentSession = torrentSession.get()
-                if (torrentSession == null) {
-                    Log.d(Tag, "Torrent Session is null, unhandled alert: $alert")
-                    return
-                }
                 when (alert.type()) {
                     AlertType.DHT_BOOTSTRAP -> torrentSession.onDhtBootstrap()
                     AlertType.DHT_STATS -> torrentSession.onDhtStats()
