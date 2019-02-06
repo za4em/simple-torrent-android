@@ -136,4 +136,8 @@ interface TorrentSessionListener {
 
     }
 
+    fun onFileCompleted(torrentHandle: TorrentHandle?, createSessionStatus: TorrentSessionStatus) {
+
+    }
+
 }

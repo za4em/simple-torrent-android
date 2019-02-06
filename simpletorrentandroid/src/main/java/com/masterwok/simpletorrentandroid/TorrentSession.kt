@@ -88,22 +88,28 @@ open class TorrentSession(
                     return
                 }
 
+                val torrentSession = torrentSession.get()
+                if (torrentSession == null) {
+                    Log.d(Tag, "Torrent Session is null, unhandled alert: $alert")
+                    return
+                }
                 when (alert.type()) {
-                    AlertType.DHT_BOOTSTRAP -> torrentSession.get()?.onDhtBootstrap()
-                    AlertType.DHT_STATS -> torrentSession.get()?.onDhtStats()
-                    AlertType.METADATA_RECEIVED -> torrentSession.get()?.onMetadataReceived(alert as MetadataReceivedAlert)
-                    AlertType.METADATA_FAILED -> torrentSession.get()?.onMetadataFailed(alert as MetadataFailedAlert)
-                    AlertType.PIECE_FINISHED -> torrentSession.get()?.onPieceFinished(alert as PieceFinishedAlert)
-                    AlertType.TORRENT_DELETE_FAILED -> torrentSession.get()?.onTorrentDeleteFailed(alert as TorrentDeleteFailedAlert)
-                    AlertType.TORRENT_DELETED -> torrentSession.get()?.onTorrentDeleted(alert as TorrentDeletedAlert)
-                    AlertType.TORRENT_REMOVED -> torrentSession.get()?.onTorrentRemoved(alert as TorrentRemovedAlert)
-                    AlertType.TORRENT_RESUMED -> torrentSession.get()?.onTorrentResumed(alert as TorrentResumedAlert)
-                    AlertType.TORRENT_PAUSED -> torrentSession.get()?.onTorrentPaused(alert as TorrentPausedAlert)
-                    AlertType.TORRENT_FINISHED -> torrentSession.get()?.onTorrentFinished(alert as TorrentFinishedAlert)
-                    AlertType.TORRENT_ERROR -> torrentSession.get()?.onTorrentError(alert as TorrentErrorAlert)
-                    AlertType.ADD_TORRENT -> torrentSession.get()?.onAddTorrent(alert as AddTorrentAlert)
-                    AlertType.BLOCK_UPLOADED -> torrentSession.get()?.onBlockUploaded(alert as BlockUploadedAlert)
-                    AlertType.STATE_CHANGED -> torrentSession.get()?.onStateChanged(alert as StateChangedAlert)
+                    AlertType.DHT_BOOTSTRAP -> torrentSession.onDhtBootstrap()
+                    AlertType.DHT_STATS -> torrentSession.onDhtStats()
+                    AlertType.METADATA_RECEIVED -> torrentSession.onMetadataReceived(alert as MetadataReceivedAlert)
+                    AlertType.METADATA_FAILED -> torrentSession.onMetadataFailed(alert as MetadataFailedAlert)
+                    AlertType.PIECE_FINISHED -> torrentSession.onPieceFinished(alert as PieceFinishedAlert)
+                    AlertType.TORRENT_DELETE_FAILED -> torrentSession.onTorrentDeleteFailed(alert as TorrentDeleteFailedAlert)
+                    AlertType.TORRENT_DELETED -> torrentSession.onTorrentDeleted(alert as TorrentDeletedAlert)
+                    AlertType.TORRENT_REMOVED -> torrentSession.onTorrentRemoved(alert as TorrentRemovedAlert)
+                    AlertType.TORRENT_RESUMED -> torrentSession.onTorrentResumed(alert as TorrentResumedAlert)
+                    AlertType.TORRENT_PAUSED -> torrentSession.onTorrentPaused(alert as TorrentPausedAlert)
+                    AlertType.TORRENT_FINISHED -> torrentSession.onTorrentFinished(alert as TorrentFinishedAlert)
+                    AlertType.TORRENT_ERROR -> torrentSession.onTorrentError(alert as TorrentErrorAlert)
+                    AlertType.ADD_TORRENT -> torrentSession.onAddTorrent(alert as AddTorrentAlert)
+                    AlertType.BLOCK_UPLOADED -> torrentSession.onBlockUploaded(alert as BlockUploadedAlert)
+                    AlertType.STATE_CHANGED -> torrentSession.onStateChanged(alert as StateChangedAlert)
+                    AlertType.FILE_COMPLETED -> torrentSession.onFileCompleted(alert as FileCompletedAlert)
                     else -> Log.d(Tag, "Unhandled alert: $alert")
                 }
             } catch (e: Exception) {
@@ -115,6 +121,7 @@ open class TorrentSession(
     }
 
     private fun isDhtReady() = sessionManager.stats().dhtNodes() >= torrentSessionOptions.dhtNodeMinimum
+
 
     private val dhtLock = Object()
 
@@ -292,6 +299,15 @@ open class TorrentSession(
         val torrentHandle = blockUploadedAlert.handle()
 
         listener?.onBlockUploaded(
+                torrentHandle
+                , createSessionStatus(torrentHandle)
+        )
+    }
+
+    private fun onFileCompleted(fileCompletedAlert: FileCompletedAlert) {
+        val torrentHandle = fileCompletedAlert.handle()
+
+        listener?.onFileCompleted(
                 torrentHandle
                 , createSessionStatus(torrentHandle)
         )
