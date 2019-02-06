@@ -140,4 +140,8 @@ interface TorrentSessionListener {
 
     }
 
+    fun onStats(torrentHandle: TorrentHandle?, createSessionStatus: TorrentSessionStatus) {
+
+    }
+
 }

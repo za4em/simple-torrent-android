@@ -110,6 +110,7 @@ open class TorrentSession(
                     AlertType.BLOCK_UPLOADED -> torrentSession.onBlockUploaded(alert as BlockUploadedAlert)
                     AlertType.STATE_CHANGED -> torrentSession.onStateChanged(alert as StateChangedAlert)
                     AlertType.FILE_COMPLETED -> torrentSession.onFileCompleted(alert as FileCompletedAlert)
+                    AlertType.STATS -> torrentSession.onStats(alert as StatsAlert)
                     else -> Log.d(Tag, "Unhandled alert: $alert")
                 }
             } catch (e: Exception) {
@@ -119,6 +120,7 @@ open class TorrentSession(
 
         override fun types(): IntArray? = null
     }
+
 
     private fun isDhtReady() = sessionManager.stats().dhtNodes() >= torrentSessionOptions.dhtNodeMinimum
 
@@ -322,6 +324,15 @@ open class TorrentSession(
         )
     }
 
+    private fun onStats(statsAlert: StatsAlert) {
+        val torrentHandle = statsAlert.handle()
+
+
+        listener?.onStats(
+                torrentHandle
+                , createSessionStatus(torrentHandle)
+        )
+    }
 
     /**
      * Download a torrent from the [torrentUrl] to the [downloadLocation] destination.
