@@ -15,7 +15,9 @@ interface TorrentSessionListener {
     fun onPieceFinished(
             torrentHandle: TorrentHandle
             , torrentSessionStatus: TorrentSessionStatus
-    )
+    ){
+
+    }
 
     /**
      * Invoked when the torrent is added.
@@ -23,7 +25,9 @@ interface TorrentSessionListener {
     fun onAddTorrent(
             torrentHandle: TorrentHandle
             , torrentSessionStatus: TorrentSessionStatus
-    )
+    ){
+
+    }
 
     /**
      * Invoked when a torrent error occurs.
@@ -31,7 +35,9 @@ interface TorrentSessionListener {
     fun onTorrentError(
             torrentHandle: TorrentHandle
             , torrentSessionStatus: TorrentSessionStatus
-    )
+    ){
+
+    }
 
     /**
      * Invoked when the torrent finishes downloading.
@@ -39,7 +45,9 @@ interface TorrentSessionListener {
     fun onTorrentFinished(
             torrentHandle: TorrentHandle
             , torrentSessionStatus: TorrentSessionStatus
-    )
+    ){
+
+    }
 
     /**
      * Invoked when fetching metadata for the provided magnet fails.
@@ -47,7 +55,9 @@ interface TorrentSessionListener {
     fun onMetadataFailed(
             torrentHandle: TorrentHandle
             , torrentSessionStatus: TorrentSessionStatus
-    )
+    ){
+
+    }
 
     /**
      * Invoked when metadata is successfully fetched.
@@ -55,7 +65,9 @@ interface TorrentSessionListener {
     fun onMetadataReceived(
             torrentHandle: TorrentHandle
             , torrentSessionStatus: TorrentSessionStatus
-    )
+    ){
+
+    }
 
     /**
      * Invoked when deleting the torrent fails.
@@ -63,7 +75,9 @@ interface TorrentSessionListener {
     fun onTorrentDeleteFailed(
             torrentHandle: TorrentHandle
             , torrentSessionStatus: TorrentSessionStatus
-    )
+    ){
+
+    }
 
     /**
      * Invoked when the torrent is paused.
@@ -71,7 +85,9 @@ interface TorrentSessionListener {
     fun onTorrentPaused(
             torrentHandle: TorrentHandle
             , torrentSessionStatus: TorrentSessionStatus
-    )
+    ){
+
+    }
 
     /**
      * Invoked when the torrent is deleted.
@@ -79,7 +95,9 @@ interface TorrentSessionListener {
     fun onTorrentDeleted(
             torrentHandle: TorrentHandle
             , torrentSessionStatus: TorrentSessionStatus
-    )
+    ){
+
+    }
 
     /**
      * Invoked when the torrent is removed.
@@ -87,7 +105,9 @@ interface TorrentSessionListener {
     fun onTorrentRemoved(
             torrentHandle: TorrentHandle
             , torrentSessionStatus: TorrentSessionStatus
-    )
+    ){
+
+    }
 
     /**
      * Invoked when the torrent is removed.
@@ -95,7 +115,9 @@ interface TorrentSessionListener {
     fun onTorrentResumed(
             torrentHandle: TorrentHandle
             , torrentSessionStatus: TorrentSessionStatus
-    )
+    ){
+
+    }
 
     /**
      * Invoked when a block of the torrent is uploaded to a peer.
@@ -103,6 +125,15 @@ interface TorrentSessionListener {
     fun onBlockUploaded(
             torrentHandle: TorrentHandle
             , torrentSessionStatus: TorrentSessionStatus
-    )
+    ){
+
+    }
+
+    fun onStateChanged(
+            torrentHandle: TorrentHandle
+            , torrentSessionStatus: TorrentSessionStatus
+    ){
+
+    }
 
 }

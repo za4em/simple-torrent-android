@@ -103,6 +103,7 @@ open class TorrentSession(
                     AlertType.TORRENT_ERROR -> torrentSession.get()?.onTorrentError(alert as TorrentErrorAlert)
                     AlertType.ADD_TORRENT -> torrentSession.get()?.onAddTorrent(alert as AddTorrentAlert)
                     AlertType.BLOCK_UPLOADED -> torrentSession.get()?.onBlockUploaded(alert as BlockUploadedAlert)
+                    AlertType.STATE_CHANGED -> torrentSession.get()?.onStateChanged(alert as StateChangedAlert)
                     else -> Log.d(Tag, "Unhandled alert: $alert")
                 }
             } catch (e: Exception) {
@@ -291,6 +292,15 @@ open class TorrentSession(
         val torrentHandle = blockUploadedAlert.handle()
 
         listener?.onBlockUploaded(
+                torrentHandle
+                , createSessionStatus(torrentHandle)
+        )
+    }
+
+    private fun onStateChanged(blockUploadedAlert: StateChangedAlert) {
+        val torrentHandle = blockUploadedAlert.handle()
+
+        listener?.onStateChanged(
                 torrentHandle
                 , createSessionStatus(torrentHandle)
         )
